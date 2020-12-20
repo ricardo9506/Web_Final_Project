@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<!-- css part -->
+<link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+{% endblock %}
+
+{% block inner %}<!-- inner part -->
+<div id="menubox">
+	
+	<div class="box left">
+		<span>
+			Already have an account?
+		</span><br><br>
+		<span>
+			Login now and enjoy SKKU Flea Market!
+		</span><br><br>
+		<a href="{% url 'flea:login' %}"><button>Login Now</button></a>
+	</div>
+	
+	<div class="box right">
+		<span>
+			New to our website?
+		</span><br><br>
+		<span>
+			This web page is SKKU Flea Market!
+		</span><br><br>
+		<a href="{% url 'flea:signup' %}"><button>Create an Account</button></a>
+	</div>
+	
+</div>
+
+<div id='searchbox'>
+	<span>Search By </span>
+	<select id='searchtype' onchange='changeSearchType()'>
+		<option value='1' selected='selected'>Name</option>
+		<option value='2'>Price</option>
+	</select>
+	<div id='searchingByName'>
+		<table><tr><td style='text-align:right'><label for='searchingName'>Name:</label></td><td><input type='text' id='searchingName'></td><td><button onclick="search('name')" class='search'></button></td></tr></table>
+	</div>
+	<div id='searchingByPrice'>
+		<table><tr><td><label for='lowprice'>Price:</label></td><td><input type='number' id='lowprice'></td><td> - </td><td><input type='number' id='hightprice'></td><td><button onclick="search('price')" class='search'></button></td></tr></table>
+	</div>
+</div>
+
+<div id='searchingReasult'>
+</div>
+
+{% endblock %}
+
+{% block script %}<!-- script part -->
+{% endblock %}
