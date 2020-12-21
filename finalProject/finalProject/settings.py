@@ -44,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -125,3 +125,6 @@ STATICFILES_DIRS=(
      ("js",os.path.join(STATIC_ROOT,'js')),
      ("image",os.path.join(STATIC_ROOT,'image')),
 )
+
+MEDIA_ROOT= os.path.join(BASE_DIR, 'media').replace("\\", "/")
+MEDIA_URL = '/media/'

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<!-- css part -->
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+
+{% block inner %}<!-- inner part -->
+<div id="menubox">
+    <div class="box left">
+        <span>
+            Already have an account?
+        </span><br><br>
+        <span>
+            Login now and enjoy SKKU Flea Market!
+        </span><br><br>
+        <a href="{% url 'flea:login' %}"><button>Login Now</button></a>
+    </div>
+    <div class="box right">
+        <span style='font-family:papyrus'>
+            Create&nbsp;&nbsp;An&nbsp;&nbsp;Account
+        </span><br><br>
+        <input type="checkbox" id="typeS" onclick="typecheck('s')"/><label for="typeS" id="s">Seller</label>
+        <input type="checkbox" id="typeB" onclick="typecheck('b')"/><label for="typeB" id="b">Buyer</label>
+        <br><br><br>
+        <input type="text" id="id" placeholder="ID"><span id="state"></span>
+        <br>
+        <button onclick="duplicate()" id="checkid">Duplicate</button>
+        <br><br>
+        <input type="email" id="email" placeholder="Email Address"><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <input type="password" id="spassword" placeholder="Confirm Password">
+        <button onclick="signup()" id="submit">REGISTER</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}<!-- script part -->
+{% endblock %}

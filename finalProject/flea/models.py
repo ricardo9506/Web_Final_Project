@@ -21,7 +21,7 @@ class Product(models.Model):
 
     id = models.AutoField(primary_key=True,verbose_name='id')
     productName = models.CharField(max_length=20,verbose_name='productName')
-    pictureName = models.CharField(max_length=50,verbose_name='pictureName',null=True)
+    pictureName = models.FileField(upload_to='productImage/',verbose_name='pictureName',null=True)
     seller = models.IntegerField(verbose_name='seller')
     buyer = models.IntegerField(verbose_name='buyer')
     price = models.IntegerField(verbose_name='price')

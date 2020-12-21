@@ -6,7 +6,26 @@
 {% endblock %}
 
 {% block inner %}<!-- inner part -->
-
+<div id="bigboxmenu">
+    <div class="menubox leftbox">
+        <span>
+            New to our website?
+        </span><br><br>
+        <span>
+            This web page is SKKU Flea Market!
+        </span><br><br>
+        <a href="signup.php"><button>Create an Account</button></a>
+    </div>
+    <div class="menubox rightbox">
+        <span>LOG IN TO ENTER</span><br>
+        <input type="checkbox" id="typeS" onclick="typecheck('s')"/><label for="typeS" id="s">Seller</label>
+        <input type="checkbox" id="typeB" onclick="typecheck('b')"/><label for="typeB" id="b">Buyer</label>
+        <br>
+        <input type="text" id="ID" placeholder="ID"><span id="state"></span><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <button onclick="login()" id="submit">Log In</button>
+    </div>
+</div>
 {% endblock %}
 
 {% block script %}<!-- script part -->
