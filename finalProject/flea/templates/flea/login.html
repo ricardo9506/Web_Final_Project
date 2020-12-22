@@ -3,25 +3,28 @@
 
 {% block css %}<!-- css part -->
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% if request.session.usertype != NULL %}
+<meta http-equiv='refresh' content="1;url='/{{request.session.usertype}}/'">
+{% endif %}
 {% endblock %}
 
 {% block inner %}<!-- inner part -->
-<div id="bigboxmenu">
-    <div class="menubox leftbox">
+<div id="menubox">
+    <div class="box left">
         <span>
             New to our website?
         </span><br><br>
         <span>
             This web page is SKKU Flea Market!
         </span><br><br>
-        <a href="signup.php"><button>Create an Account</button></a>
+        <a href="/signup/"><button>Create an Account</button></a>
     </div>
-    <div class="menubox rightbox">
-        <span>LOG IN TO ENTER</span><br>
+    <div class="box right">
+        <span style="font-family: courier;">LOGIN TO ENTER</span><br>
         <input type="checkbox" id="typeS" onclick="typecheck('s')"/><label for="typeS" id="s">Seller</label>
         <input type="checkbox" id="typeB" onclick="typecheck('b')"/><label for="typeB" id="b">Buyer</label>
         <br>
-        <input type="text" id="ID" placeholder="ID"><span id="state"></span><br>
+        <input type="text" id="id" placeholder="ID"><span id="state"></span><br>
         <input type="password" id="password" placeholder="Password"><br>
         <button onclick="login()" id="submit">Log In</button>
     </div>

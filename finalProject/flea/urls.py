@@ -11,4 +11,11 @@ urlpatterns = [
     path('product/',views.product,name='product'),
     path('search/',views.search,name='search'),
     path('checkId/',views.checkId,name='checkId'),
+    path('admin/',views.adminPage,name='admin'),
+    path('signout/',views.signout,name='signout'),
+    path('delete/',views.delete,name="delete"),
+    path('modify/',views.modify,name="modify"),
+    path('seller/',views.sellerPage,name='seller'),
+    path('connect/',views.connectPage,name='connect'),
+    path('addProduct/',views.addProduct,name='addProduct'),
 ]

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<!-- css part -->
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% if request.session.usertype == NULL %}
+<meta http-equiv='refresh' content='1;url={% url 'flea:homepage' %}'>
+{% elif request.session.usertype != "admin" %}
+<meta http-equiv='refresh' content="1;url='/{{request.session.usertype}}/'">
+{% endif %}
+{% if request.session.usertype == NULL or request.session.usertype != "admin" %}
+<style>body{display:none;}</style>
+{% endif %}
+{% endblock %}
+
+{% block inner %}<!-- inner part -->
+<div class="mainbox">
+    <h2>Accounts:</h2>
+    <table rules="none">
+    <tr><th>Student ID(Name)</th><th>Password</th><th>E-mail</th><th>Buyer/Seller</th><th>Delete</th></tr>
+    {% for user in userInfo %}
+    <tr data-id="{{user.id}}" name="accounts" id="id{{user.id}}">
+        <td id="username{{user.id}}" onclick="accountChange('username{{user.id}}')">{{user.username}}</td>
+        <td id="password{{user.id}}" onclick="accountChange('password{{user.id}}')">{{user.password}}</td>
+        <td id="email{{user.id}}" onclick="accountChange('email{{user.id}}')">{{user.email}}</td>
+        {% if user.usertype == "0" %}
+        <td id="type{{user.id}}" onclick="accountChange('type{{user.id}}')">admin</td>
+        {% elif user.usertype == "1" %}
+        <td id="type{{user.id}}" onclick="accountChange('type{{user.id}}')">seller</td>
+        {% elif user.usertype == "2" %}
+        <td id="type{{user.id}}" onclick="accountChange('type{{user.id}}')">buyer</td>
+        {% endif %}
+        <td><button onclick="deleteAccount('{{user.id}}')">Delete</button></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" style="text-align: center;">No Data</td></tr>
+    {% endfor %}
+    </table>
+    <button onclick="saveAccount()" id="save">SAVE</button>
+</div>
+
+<div class="mainbox">
+    <h2>Products:</h2>
+    <table rules="none">
+        <tr><th>Product Name</th><th>Seller Name</th><th>Price</th><th>Sell Status</th><th>Seller Phone Number</th><th>Trade Place</th><th>Upload Time</th><th>End Time</th></tr>
+        {% now "Y-m-d-s" as time %}
+        {% for pro in products %}
+        <tr>
+            <td>{{pro.productName}}</td>
+            <td>{{pro.sellerName}}</td>
+            <td>{{pro.price}}</td>
+            {% if pro.sellType == "0" %}
+            {% if pro.buyer == -1 %}
+            <td>Selling</td>
+            {% else %}
+            <td>Sold</td>
+            {% endif %}
+            {% elif pro.sellType == "1" %}
+            {% if pro.endTime < time %}
+            <td>Bidding</td>
+            {%else%}
+            <td>End Bidding</td>
+            {% endif %}
+            {% endif %}
+            <td>{{pro.sellerNumber}}</td>
+            <td>{{pro.tradePlace}}</td>
+            <td>{{pro.uploadTime}}</td>
+            <td>{{pro.endTime}}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" style="text-align: center;">No Data</td></tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}<!-- script part -->
+{% endblock %}

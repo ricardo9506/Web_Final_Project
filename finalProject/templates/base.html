@@ -10,9 +10,10 @@
 	<body>
 		<div id="topbar">
 			<a id="logo" href="{% url 'flea:homepage' %}">SKKU&nbsp;&nbsp;FLEA&nbsp;&nbsp;MARKET</a>
-			{% if request.session.id == NULL %}{%endif%}
-<!--
-			<a href='{{ type }}/' style='margin-right: 1%';>{{ name }}</a><a href='logout/'><button>Sign Out</button></a>-->
+			{% if request.session.id != NULL %}
+			<a href='/{{request.session.usertype}}/' style='margin-left:40%;margin-right:10px;'>{{request.session.username}}</a>
+			<button onclick='signout()'>Sign Out</button>
+			{% endif %}
 		</div>
 		{% block inner %}{% endblock %}
 		<div id="footer">

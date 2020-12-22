@@ -1,3 +1,18 @@
+function signout(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/signout/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send("abc");
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                window.location.href = "/homepage/"; 
+            }else{
+                alert("Something Wrong!");
+            }
+        }
+    }
+}
 function changeSearchType(){
 	var type = document.getElementById("searchtype").value;
 	if(type==1){
@@ -138,4 +153,203 @@ function duplicate(){
 			}
 		}
 	}
+}
+
+function login(){
+	var type;
+	var logined;
+	var b = document.getElementById("typeB").checked;
+	var s = document.getElementById("typeS").checked;
+	if(s==true){
+		type = "1";
+		logined = "/seller/";
+	}else if(b == true){
+		type = "2";
+		logined = "/buyer/";
+	}else{
+		type = "0";
+		logined = "/admin/";
+	}
+	var id = document.getElementById("id").value;
+    var password = document.getElementById("password").value;
+    
+	if(id==""){
+		alert("Please input your ID!")
+	}else if(password==""){
+		alert("Please input your password!");
+	}else{
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST","/login/",true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xhr.send("id="+id+"&type="+type+"&password="+password);
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState===4){
+				if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+					if(xhr.responseText == "1"){
+						window.location.href = logined;
+					}else{
+						alert("Failed!\nPlease Check your Password or Username!\nOR Connect to Administrator!");
+					}
+				}
+			}
+		}
+	}
+}
+
+function accountChange(item){
+    var inner = document.getElementById(item).innerText;
+    var changed = prompt("Change",inner);
+    if(changed==null||changed==""){
+        return;
+    }else{
+        document.getElementById(item).innerText = changed;
+    }
+}
+
+function deleteAccount(id){
+	if(confirm("Really want to Delete This Account???\nAll Data related to This Account will Be Deleted!!!")){
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST","/delete/",true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xhr.send("type=0&id="+id);
+		xhr.onreadystatechange = function(){
+            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+                if(xhr.responseText=="1"){
+                    alert("Succeed!");
+                    document.getElementById("id"+id).style.display = "none";
+                }else{
+                    alert("Something Wrong!");
+                }
+			}
+		}
+	}
+}
+
+function saveAccount(){
+    var data = document.getElementsByName("accounts");
+	var array = new Array();
+	for(var i = 0;i < data.length;i++){
+		if(data[i].style.display!="none"){
+            var id = data[i].getAttribute("data-id");
+			var username = document.getElementById("username"+id).innerText;
+			var password = document.getElementById("password"+id).innerText;
+			var email = document.getElementById("email"+id).innerText;
+			var type = document.getElementById("type"+id).innerText;
+			if(type=="admin"){
+				type = 0;
+			}else if(type=="seller"){
+				type = 1;
+			}else if(type=="buyer"){
+				type = 2;
+            }
+
+            array[i] = new Array();
+            array[i][0] = id;
+            array[i][1] = username;
+            array[i][2] = password;
+            array[i][3] = email;
+            array[i][4] = type;
+		}
+    }
+   
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/modify/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send("type=0&data="+JSON.stringify(array))
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                alert("Saved!!!!");
+            }else{
+                alert("Something Wrong!!!!");
+            }
+        }
+    }
+}
+
+function selectImage(){
+    document.getElementById("hideInput").click();
+}
+
+function getObjectURL(file) {
+	var url = null ;
+	if(window.createObjectURL!=undefined) {
+		url = window.createObjectURL(file) ;
+	}else if(window.URL!=undefined) {
+		url = window.URL.createObjectURL(file) ;
+	}else if(window.webkitURL!=undefined) {
+		url = window.webkitURL.createObjectURL(file) ;
+	}
+	return url ;
+}
+
+function showImage(obj){
+    var img = getObjectURL(obj.files[0]);
+    document.getElementById("imagebox").style.display="none";
+	document.getElementById("pic").style.display = "block";
+	document.getElementById("imageShow").src = img;
+}
+
+function selectSellType(id){
+	var status = document.getElementById(id).checked;
+	if(id=="flea"&&status==true){
+		document.getElementById("auction").checked = false;
+		document.getElementById("endtimebox").style.display = "none";
+	}else if(id=="auction"&&status==true){
+		document.getElementById("flea").checked=false;
+		document.getElementById("endtimebox").style.display="block";
+	}else{
+		document.getElementById("endtimebox").style.display="none";
+	}
+}
+
+function addProduct(){
+    var image = document.getElementById("hideInput").files[0];
+	var productname = document.getElementById("productName").value;
+	var price = document.getElementById("productPrice").value;
+	var sellerName = document.getElementById("sellerName").value;
+	var sellerPhone = document.getElementById("sellerPhone").value;
+    var address = document.getElementById("address").value;
+    
+	if(document.getElementById("flea").checked==true){
+		var type = "0";
+	}else if(document.getElementById("auction").checked==true){
+		var type = "1";
+	}else{
+		alert("How do you want to Sell?");
+		return;
+    }
+    
+	if(image==undefined || productname=="" || price=="" || sellerName=="" || sellerName=="" || sellerPhone=="" || address==""){
+		alert("Complete Product Information Please!");
+		return;
+    }
+    
+    var fd = new FormData();
+	fd.append("img",image);
+	fd.append("productname",productname);
+	fd.append("price",price);
+	fd.append("sellerName",sellerName);
+	fd.append("sellerPhone",sellerPhone);
+	fd.append("address",address);
+    fd.append("type",type);
+    
+    if(type==1){
+		var endtime = document.getElementById("endtime").value;
+		fd.append("endtime",endtime);
+    }
+    
+    var xhr = new XMLHttpRequest();
+	xhr.open("POST","/addProduct/",true);
+    xhr.send(fd);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                alert("Upload Succeed!");
+                location.reload();
+            }else{
+                alert("Something Wrong!");
+            }
+        }
+    }
 }

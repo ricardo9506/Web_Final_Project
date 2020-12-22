@@ -14,11 +14,12 @@ button{
 	border-radius: 20px;
 	font-size: 15px;
 	font-weight: bolder;
+	font-family: courier;
 }
 
 #topbar{
 	width: 100%;
-	height: 57px;
+	height: 60px;
 	box-shadow: 0 5px 5px lightgrey;
 }
 
@@ -26,7 +27,7 @@ button{
 	font-size: 27px;
 	color: #012e5d;
 	margin-left: 20%;
-	line-height: 57px;
+	line-height: 60px;
 	font-weight: bolder;
 }
 

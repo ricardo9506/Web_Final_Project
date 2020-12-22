@@ -1,0 +1,96 @@
+#menubox{
+	width: 60%;
+	margin: 100px auto;
+	height: 600px;
+}
+
+label{
+    font-family: courier;
+}
+
+.box{
+	width: 49%;
+	float: left;
+	height: 600px;
+}
+
+.left{
+	background: #4c5ced;
+	text-align: center;
+}
+
+.left span{
+	color: white;
+	font-family: papyrus;
+	position: relative;
+}
+
+.left span:nth-of-type(1){
+	font-size: 26px;
+	font-weight: bolder;
+	top:200px;
+}
+
+.left span:nth-of-type(2){
+	font-size: 18px;
+	font-weight: lighter;
+	top:200px;
+}
+
+.left button{
+	color: #FFFFFF;
+	width: 200px;
+	position: relative;
+	top:250px;
+}
+
+.left button:hover{
+	color: #4c5ced;
+	background: #FFFFFF;
+}
+
+.right{
+	box-shadow: 10px 10px 10px whitesmoke;
+	text-align: center;
+}
+
+.right span:nth-of-type(1){
+	font-size: 26px;
+	position: relative;
+	top: 103px;
+}
+
+#typeB,
+#s,
+#b,
+#typeS{
+	font-size: 16px;
+	margin-left: 5px;
+	position: relative;
+	top: 190px;
+}
+
+#id,
+#password{
+	width: 358px;
+	height: 25px;
+	border: none;
+	border-bottom: 1px solid rgb(168,168,168);
+	font-size: 15px;
+	margin-top: 30px;
+	position: relative;
+	top:200px;
+}
+
+#submit{
+	width: 358px;
+	background-color: #384aec;
+	border-radius: 20px;
+	border: none;
+	color: #FFFFFF;
+	font-size: 13px;
+	font-weight: bolder;
+	margin-top: 40px;
+	position: relative;
+	top:300px;
+}

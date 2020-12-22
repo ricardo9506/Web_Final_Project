@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<!-- css part -->
+<link rel="stylesheet" href="{% static 'css/seller.css' %}">
+{% if request.session.usertype == NULL %}
+<meta http-equiv='refresh' content='1;url={% url 'flea:homepage' %}'>
+{% elif request.session.usertype != "seller" %}
+<meta http-equiv='refresh' content="1;url='/{{request.session.usertype}}/'">
+{% endif %}
+{% if request.session.usertype == NULL or request.session.usertype != "seller" %}
+<style>body{display:none;}</style>
+{% endif %}
+{% endblock %}
+
+{% block inner %}<!-- inner part -->
+<div id="menu">
+    <a>_for seller</a>
+    <a href="{% url 'flea:seller' %}?page=home">Home</a>
+    <a href="{% url 'flea:seller' %}?page=list">Product List</a>
+    <a href="{% url 'flea:connect' %}">Connect Us</a>
+</div>
+{% if request.GET.page == "home" or request.GET.page == NULL %}
+<div id="ad">
+    <img src="{% static 'image/logo.png' %}">
+    <div id='logoInner'>
+        <span>Fun Shopping</span><br>
+        <span>SKKU FLEA MARKET</span><br><br>
+        <span>Anabada is a Korean word which has four meanings - "Saving, Sharing, Exchanging, and Reusing". The campaign has helped South Korea overcome financially hard times.</span>
+        <button onclick="showUploadTable()"></button>
+    </div>
+</div>
+<div id='addProductTable'>
+    <div id="imagebox" onclick="selectImage()">
+        <span>Click here to browse</span><br><span>your product image file</span>
+    </div>
+    <div id='pic' onclick='selectImage()' style='display:none'><img src='' id='imageShow'></div>
+    <table id='inputTable'>
+        <tr><td><input type='text' placeholder='Enter Product Name' id='productName' class='input'></td></tr>
+        <tr><td><input type='text' placeholder='Enter Product Price' id='productPrice' class='input'></td></tr>
+        <tr><td><input type='text' placeholder='Enter Your Name' id='sellerName' class='input'></td></tr>
+        <tr><td><input type='telephone' placeholder='Enter Your Phone Number' id='sellerPhone' class='input'></td></tr>
+        <tr><td><input type='text' placeholder='Enter Trading Place' id='address' class='input'></td></tr>
+        <tr><td><input type='checkbox' id='flea' onclick="selectSellType('flea')"><label for='flea'>Flea Market</label></td></tr>
+        <tr><td><input type='checkbox' id='auction' onclick="selectSellType('auction')"><label for='auction'>Auction</label></td></tr>
+        <tr id='endtimebox'>
+            <td>
+                <label for='endtime'>End Time: </label>
+                <input type="number" id='endtime' class="input">
+                Hour(s)
+            </td>
+        </tr>
+        <tr><td style='float:right;'><button onclick='addProduct()' class='submitButtons'>Sell Now</button></td></tr>
+    </table>
+</div>
+<input type='file' accept='image/*' style='display:none' id='hideInput' onchange='showImage(this)'>
+{% elif request.GET.page == "list" %}
+<div id='addProductTable'>
+    <div id="imagebox" onclick="selectImage()">
+        <span>Click here to browse</span><br><span>your product image file</span>
+    </div>
+    <div id='pic' onclick='selectImage()' style='display:none'><img src='' id='imageShow'></div>
+    <table id='inputTable'>
+        <tr><td><input type='text' placeholder='Enter Product Name' id='productName' class='input'></td></tr>
+        <tr><td><input type='text' placeholder='Enter Product Price' id='productPrice' class='input'></td></tr>
+        <tr><td><input type='text' placeholder='Enter Your Name' id='sellerName' class='input'></td></tr>
+        <tr><td><input type='telephone' placeholder='Enter Your Phone Number' id='sellerPhone' class='input'></td></tr>
+        <tr><td><input type='text' placeholder='Enter Trading Place' id='address' class='input'></td></tr>
+        <tr><td><input type='checkbox' id='flea' onclick="selectSellType('flea')"><label for='flea'>Flea Market</label></td></tr>
+        <tr><td><input type='checkbox' id='auction' onclick="selectSellType('auction')"><label for='auction'>Auction</label></td></tr>
+        <tr id='endtimebox'>
+            <td>
+                <label for='endtime'>End Time: </label>
+                <input type="number" id='endtime' class="input">
+                Hour(s)
+            </td>
+        </tr>
+        <tr><td style='float:right;'><button onclick='addProduct()' class='submitButtons'>Sell Now</button></td></tr>
+    </table>
+</div>
+<input type='file' accept='image/*' style='display:none' id='hideInput' onchange='showImage(this)'>
+{% endif %}
+
+{% endblock %}
+
+{% block script %}<!-- script part -->
+{% endblock %}
