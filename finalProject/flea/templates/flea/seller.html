@@ -27,10 +27,10 @@
         <span>Fun Shopping</span><br>
         <span>SKKU FLEA MARKET</span><br><br>
         <span>Anabada is a Korean word which has four meanings - "Saving, Sharing, Exchanging, and Reusing". The campaign has helped South Korea overcome financially hard times.</span>
-        <button onclick="showUploadTable()"></button>
+        <button onclick="showUploadTable()" id='showUploadTable'>Upload Product!</button>
     </div>
 </div>
-<div id='addProductTable'>
+<div id='addProductTable' style="display: none;">
     <div id="imagebox" onclick="selectImage()">
         <span>Click here to browse</span><br><span>your product image file</span>
     </div>
@@ -55,7 +55,52 @@
 </div>
 <input type='file' accept='image/*' style='display:none' id='hideInput' onchange='showImage(this)'>
 {% elif request.GET.page == "list" %}
-<div id='addProductTable'>
+<div id="allProducts">
+    <button onclick="showUploadTable()">Add Product</button>
+    <table rules="none">
+        <tr><th>Product Name</th><th>Current Price</th><th>Trade Place</th><th>Status</th><th>History</th><th>Delete</th></tr>
+        {% now "Y-m-d-s" as time %}
+        {% for pro in products %}
+        <tr id="id{{pro.id}}" name="product" data-id="{{pro.id}}"><td onclick="accountChange('productName{{pro.id}}')" id='productName{{pro.id}}'>{{pro.productName}}</td>
+            <td>{{pro.price}}</td>
+            <td onclick="accountChange('tradePlace{{pro.id}}')" id='tradePlace{{pro.id}}'>{{pro.tradePlace}}</td>
+            <td >
+                {% if pro.sellType == "0" %}
+                    {% if pro.buyer == -1 %}
+                        Selling
+                    {% else %}
+                        Sold
+                    {% endif %}
+                {% elif pro.sellType == "1" %}
+                    {% if pro.endTime|date:"Y-m-d-s" > time %}
+                        Bidding
+                    {% else %}
+                        End Bidded
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td>
+                {% for a in auction %}
+                    {% if a.product == pro.id %}
+                        <span>
+                            {% for u in user %}
+                                {% if u.id == a.bidder %}
+                                    {{u.username}}:
+                                {% endif %}
+                            {% endfor %}
+                            {{a.uploadTime}}({{a.price}})</span><br>
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td><button onclick="deleteProduct('{{pro.id}}')" style="color: #000000;background: white;border: none;">Delete</button></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" style="text-align: center;">No Data</td></tr>
+        {% endfor %}
+    </table>
+    <button onclick="saveProducts()" id="save">SAVE</button>
+</div>
+<div id='addProductTable' style="display: none;">
     <div id="imagebox" onclick="selectImage()">
         <span>Click here to browse</span><br><span>your product image file</span>
     </div>

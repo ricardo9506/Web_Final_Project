@@ -90,7 +90,7 @@ def signout(request):
 
 def delete(request):
     if request.POST.get("type") == "0":
-        id = request.POST.get("id")
+        id = int(request.POST.get("id"))
         try:
             models.Cart.objects.filter(buyer=id).delete()
         except:
@@ -115,6 +115,14 @@ def delete(request):
             return HttpResponse("1")
         except:
             return HttpResponse("0")
+    elif request.POST.get("type") == "1":
+        id = request.POST.get("id")
+        try:
+            models.Product.objects.filter(id=int(id)).delete()
+            modeles.AuctionInformation.objects.filter(product=int(id)).delete()
+            return HttpResponse("1")
+        except:
+            return HttpResponse("1")
     else:
         return HttpResponse("0")
 
@@ -123,18 +131,27 @@ def modify(request):
         data = eval(request.POST.get("data"))
         try:
             for rolumn in data:
-                inner = models.UserInfo.objects.get(id=rolumn[0])
-                inner.username = rolumn[1]
-                inner.password = rolumn[2]
-                inner.email = rolumn[3]
-                inner.usertype = rolumn[4]
-                inner.save()
+                models.UserInfo.objects.filter(id=rolumn[0]).update(username=rolumn[1],password=rolumn[2],email=rolumn[3],usertype=rolumn[4])
+            return HttpResponse("1")
+        except:
+            return HttpResponse("0")
+    elif request.POST.get("type") == "1":
+        data = eval(request.POST.get("data"))
+        try:
+            for rolumn in data:
+                models.Product.objects.filter(id=int(rolumn[0])).update(productName=rolumn[1],tradePlace=rolumn[2])
             return HttpResponse("1")
         except:
             return HttpResponse("0")
 
 def sellerPage(request):
+    products = models.Product.objects.filter(seller=int(request.session["id"])).values()
+    auction = models.AuctionInformation.objects.all().values()
+    users = models.UserInfo.objects.all().values()
     return render(request,'flea/seller.html',locals())
+
+def buyerPage(request):
+    return render(request,'flea/buyer.html',locals())
 
 def connectPage(request):
     return render(request,'flea/connect.html',locals())

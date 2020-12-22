@@ -16,6 +16,7 @@ urlpatterns = [
     path('delete/',views.delete,name="delete"),
     path('modify/',views.modify,name="modify"),
     path('seller/',views.sellerPage,name='seller'),
+    path('buyer/',views.buyerPage,name='buyer'),
     path('connect/',views.connectPage,name='connect'),
     path('addProduct/',views.addProduct,name='addProduct'),
 ]

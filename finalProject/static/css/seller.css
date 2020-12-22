@@ -108,6 +108,7 @@
     display: none;
 }
 
+#allProducts button:nth-child(1),
 .submitButtons{
     width: 150px;
 	height: 50px;
@@ -121,4 +122,61 @@
 	float: left;
 	width: 300px;
 	height: 300px;
+}
+
+#imageShow{
+	width: 300px;
+	height: 300px;
+}
+
+#showUploadTable{
+	border: none;
+	margin-top: 100px;
+	text-decoration: underline;
+}
+
+#allProducts{
+	width: 60%;
+	margin: 100px auto;
+}
+
+#allProducts table{
+	margin-top: 20px;
+	width: 100%;
+	text-align: left;
+	line-height: 64px;
+	box-shadow: grey 0 0 10px;
+	border-radius: 10px;
+}
+
+th{
+	background: #36304a;
+	color: #FFFFFF;
+	font-size: 20px;
+	padding-left: 10px;
+}
+
+#allProducts th:first-child{
+	border-radius: 10px 0 0 0;
+}
+
+#allProducts th:last-child{
+	border-radius: 0 10px 0 0;
+}
+
+td{
+	padding-left: 10px;
+	color: rgb(158,158,158);
+	font-size: 17px;
+	font-weight: 100;
+}
+
+#save{
+    margin-left: 90%;
+    margin-top: 20px;
+	border-radius: 0;
+	background: #354bed;
+	color: white;
+	width: 77px;
+	height: 43px;
 }

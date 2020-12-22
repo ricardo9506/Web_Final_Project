@@ -225,6 +225,25 @@ function deleteAccount(id){
 	}
 }
 
+function deleteProduct(id){
+    if(confirm("Really want to Delete This Product???")){
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST","/delete/",true);
+		xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xhr.send("type=1&id="+id);
+		xhr.onreadystatechange = function(){
+            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+                if(xhr.responseText=="1"){
+                    alert("Succeed!");
+                    document.getElementById("id"+id).style.display = "none";
+                }else{
+                    alert("Something Wrong!");
+                }
+			}
+		}
+	}
+}
+
 function saveAccount(){
     var data = document.getElementsByName("accounts");
 	var array = new Array();
@@ -256,6 +275,37 @@ function saveAccount(){
     xhr.open("POST","/modify/",true);
     xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xhr.send("type=0&data="+JSON.stringify(array))
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                alert("Saved!!!!");
+            }else{
+                alert("Something Wrong!!!!");
+            }
+        }
+    }
+}
+
+function saveProducts(){
+    var data = document.getElementsByName("product");
+	var array = new Array();
+	for(var i = 0;i < data.length;i++){
+		if(data[i].style.display!="none"){
+            var id = data[i].getAttribute("data-id");
+			var productName = document.getElementById("productName"+id).innerText;
+			var tradePlace = document.getElementById("tradePlace"+id).innerText;
+
+            array[i] = new Array();
+            array[i][0] = id;
+            array[i][1] = productName;
+            array[i][2] = tradePlace;
+		}
+    }
+   
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/modify/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send("type=1&data="+JSON.stringify(array))
     xhr.onreadystatechange = function(){
         if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
             if(xhr.responseText=="1"){
@@ -346,10 +396,18 @@ function addProduct(){
         if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
             if(xhr.responseText=="1"){
                 alert("Upload Succeed!");
-                location.reload();
+                window.location.href="/seller/?page=list";
             }else{
                 alert("Something Wrong!");
             }
         }
+    }
+}
+
+function showUploadTable(){
+    if(document.getElementById("addProductTable").style.display=="none"){
+        document.getElementById("addProductTable").style.display="block";
+    }else if(document.getElementById("addProductTable").style.display=="block"){
+        document.getElementById("addProductTable").style.display="none";
     }
 }
