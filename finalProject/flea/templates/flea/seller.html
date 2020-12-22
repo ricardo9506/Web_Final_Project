@@ -83,7 +83,7 @@
                 {% for a in auction %}
                     {% if a.product == pro.id %}
                         <span>
-                            {% for u in user %}
+                            {% for u in users %}
                                 {% if u.id == a.bidder %}
                                     {{u.username}}:
                                 {% endif %}
