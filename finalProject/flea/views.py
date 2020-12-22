@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from flea import models
-import datetime
+import datetime,pytz
+utc=pytz.UTC
 
 # Create your views here.
 def homepage(request):
@@ -46,6 +47,8 @@ def signup(request):
 def product(request):
     if "id" in request.GET:
         productId = request.GET.get("id")
+        product = models.Product.objects.filter(id=productId).values()[0]
+        endtime = product["endTime"].__format__('%Y/%m/%d %H:%M:%S')
         return render(request,'flea/product.html',locals())
     else:
         return render(request,'flea/homepage.html',locals())
@@ -54,16 +57,60 @@ def search(request):
     if request.method == "POST":
         searchType = request.POST.get("type")
         if searchType == "name":
-            res = models.Product.objects.filter(productName__contains=request.POST.get("key1"))
+            res = models.Product.objects.filter(productName__contains=request.POST.get("key1")).values()
             result = list()
             for r in res:
-                result.append(r)
+                l = list()
+                for k in r.keys():
+                    if k == "uploadTime":
+                        l.append(r["uploadTime"].__format__('%Y/%m/%d %H:%M:%S'))
+                        continue
+                    elif k == "endTime":
+                        if r["endTime"] == None:
+                            l.append("null")
+                        else:
+                            l.append(r["endTime"].__format__('%Y/%m/%d %H:%M:%S'))
+                    else:
+                        l.append(r[k])
+                if r["sellType"] == "0":
+                    if r["buyer"] == -1:
+                        l.append("Selling")
+                    else:
+                        l.append("Sold")
+                else:
+                    if utc.localize(r["endTime"]) < utc.localize(datetime.datetime.now()):
+                        l.append("Bidding")
+                    else:
+                        l.append("End Bidded")
+                result.append(l)
             return HttpResponse(str(result))
         else:
-            res = models.Product.objects.filter(productName__range=[request.POST.get("key1"),request.POST.get("key2")])
+            res = models.Product.objects.filter(productName__range=[request.POST.get("key1"),request.POST.get("key2")]).values()
             result = list()
             for r in res:
-                result.append(r)
+                l = list()
+                for k in r.keys():
+                    if k == "uploadTime":
+                        l.append(r["uploadTime"].__format__('%Y/%m/%d %H:%M:%S'))
+                        continue
+                    elif k == "endTime":
+                        if r["endTime"] == None:
+                            l.append("null")
+                        else:
+                            l.append(r["endTime"].__format__('%Y/%m/%d %H:%M:%S'))
+                    else:
+                        l.append(r[k])
+                if r["sellType"] == "0":
+                    if r["buyer"] == -1:
+                        l.append("Selling")
+                    else:
+                        l.append("Sold")
+                else:
+                    if utc.localize(r["endTime"]) < utc.localize(datetime.datetime.now()):
+                        l.append("Bidding")
+                    else:
+                        l.append("End Bidded")
+                result.append(l)
             return HttpResponse(str(result))
 
 def checkId(request):
@@ -151,6 +198,9 @@ def sellerPage(request):
     return render(request,'flea/seller.html',locals())
 
 def buyerPage(request):
+    orders = models.Product.objects.filter().values()
+    auctions = models.AuctionInformation.objects.filter(bidder=int(request.session["id"])).values()
+    cart = models.Cart.objects.filter(buyer=int(request.session["id"])).values()
     return render(request,'flea/buyer.html',locals())
 
 def connectPage(request):

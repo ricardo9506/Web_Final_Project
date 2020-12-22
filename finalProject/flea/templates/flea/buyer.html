@@ -14,6 +14,13 @@
 {% endblock %}
 
 {% block inner %}<!-- inner part -->
+<div id="menu">
+    <a>_for buyer</a>
+    <a href="{% url 'flea:buyer' %}?page=home">Home</a>
+    <a href="{% url 'flea:buyer' %}?page=list">Product List</a>
+    <a href="{% url 'flea:connect' %}">Connect Us</a>
+    <a href="{% url 'flea:buyer' %}?page=cart"><button style="background: url('{% static 'image/cart.png' %}') center center; width:40px;height: 40px;background-size: 100% 100%;border:none;border-radius:0;"></button></a>
+</div>
 {% if request.GET.page == "home" or request.GET.page == NULL %}
 <div id="ad">
     <img src="{% static 'image/logo.png' %}">
@@ -24,7 +31,7 @@
         <button onclick="showSearchingPage()" id='showSearchingPage'>Find Your Product!</button>
     </div>
 </div>
-<div id='searchbox'>
+<div id='searchbox' style='display:none'>
 	<span>Search By </span>
 	<select id='searchtype' onchange='changeSearchType()'>
 		<option value='1' selected='selected'>Name</option>
@@ -39,6 +46,83 @@
 </div>
 
 <div id='searchingReasult'></div>
+{% elif request.GET.page == "list" %}
+{% now "Y-m-d-s" as time %}
+<div class='buyerTables'>
+    <h1>All Orders</h1>
+    <table rules='none' class='buyerTableItem'>
+        <tr><th>Product Name</th><th>Current Price</th><th>Trading Place</th><th>Phone Number</th><th>Status</th><th>Seller Name</th></tr>
+        {% for pro in orders %}
+            {% if pro.sellType == "0" and pro.buyer == request.session.id %}
+                <tr><td><a href="{% url 'flea:product' %}?id={{pro.id}}">{{pro.productName}}</a></td><td>{{pro.price}}</td><td>{{pro.tradePlace}}</td><td>{{pro.sellerNumber}}</td><td>Order Completed</td><td>{{pro.sellerName}}</td></tr>
+            {% elif pro.sellType == "1" %}
+                {% if pro.endTime|date:"Y-m-d-s" < time %}
+                    {% for a in auctions %}
+                        {% if a.bidder == request.session.id %}
+                            <tr><td><a href="{% url 'flea:product' %}?id={{pro.id}}">{{pro.productName}}</a></td><td>{{a.price}}</td><td>{{pro.tradePlace}}</td><td>{{pro.sellerNumber}}</td><td>
+                                {% if a.price == pro.price %}
+                                Bidding(You are the highest)
+                                {% else %}
+                                Bidding(You are not he highest)
+                                {% endif %}
+                            </td><td>{{pro.sellerName}}</td></tr>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% for a in auctions %}
+                        {% if a.bidder == request.session.id %}
+                            <tr><td><a href="{% url 'flea:product' %}?id={{pro.id}}">{{pro.productName}}</a></td><td>{{a.price}}</td><td>{{pro.tradePlace}}</td><td>{{pro.sellerNumber}}</td><td>
+                                {% if a.price == pro.price %}
+                                Bidding Succeed!
+                                {% else %}
+                                Bidding Failed!
+                                {% endif %}
+                            </td><td>{{pro.sellerName}}</td></tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </table>
+</div>
+{% elif request.GET.page == "cart" %}
+{% now "Y-m-d-s" as time %}
+<div class='buyerTables'>
+    <h1>Cart</h1>
+    <table rules='none' class='buyerTableItem'>
+        <tr><th>Product Name</th><th>Current Price</th><th>Trading Place</th><th>Phone Number</th><th>Status</th><th>Seller Name</th></tr>
+        {% for c in cart %}
+                {% for p in orders %}
+                    {% if p.id == c.product %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'flea:product' %}?id={{c.product}}">{{p.productName}}</a>
+                        </td>
+                        <td>{{p.price}}</td>
+                        <td>{{p.tradePlace}}</td>
+                        <td>{{p.sellerNumber}}</td>
+                        <td>
+                            {% if p.sellType == "0" %}
+                                {% if p.buyer != -1 %}
+                                    Sold
+                                {% else %}
+                                    Selling
+                                {% endif %}
+                            {% else %}
+                                {% if p.endTime|date:"Y-m-d-s" > time %}
+                                Bidding
+                                {% else %}
+                                End Bidding
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>{{p.sellerName}}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor  %}
+        {% endfor %}
+    </table>
+</div>
 {% endif %}
 
 {% endblock %}

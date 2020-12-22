@@ -1,5 +1,7 @@
-from django.urls import path
+from django.urls import path,re_path
 from flea import views
+from django.views.static import serve
+from finalProject.settings import MEDIA_ROOT
 
 app_name = 'flea'
 
@@ -19,4 +21,5 @@ urlpatterns = [
     path('buyer/',views.buyerPage,name='buyer'),
     path('connect/',views.connectPage,name='connect'),
     path('addProduct/',views.addProduct,name='addProduct'),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

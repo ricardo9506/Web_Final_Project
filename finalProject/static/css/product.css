@@ -1,0 +1,41 @@
+#mianbox{
+	width: 50%;
+	margin: 200px auto;
+}
+
+#mianbox img{
+	width: 400px;
+	height: 400px;
+	float: left;
+}
+
+#mainboxtable{
+	width: auto;
+	float: left;
+}
+
+#mainboxtable td{
+	font-size: 20px;
+	color: #000000;
+    font-weight: normal;
+    height: 60px;
+}
+
+#lefttime{
+	color: #C5312D;
+	font-weight: bolder;
+}
+
+#bidprice{
+	height: 30px;
+	font-size: 13px;
+}
+
+.thisbutton{
+    border: none;
+    border-radius: 0;
+    height: 40px;
+    color: aliceblue;
+    background: #374ddd;
+    padding: 5px 30px;
+}

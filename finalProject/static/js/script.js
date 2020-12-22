@@ -44,13 +44,14 @@ function search(type){
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState===4){
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+                console.log(xhr.responseText);
 				var res =  eval(xhr.responseText);
 				var inner = "<table rules='none'><tr><th>Product Name</th><th>Current Price</th><th>Trading Place</th><th>Phone Number</th><th>Status</th><th>Seller Name</th></tr>";
 				if(res.length == undefined){
 					inner += "<tr><td colspan='6' style='text-align:center'>No Data</td></tr>"
 				}else{
 					for(var i = 0;i < res.length;i++){
-						inner += "<tr><td><a href='buyer.php?turn=4&id="+res[i][0]+"'>" + res[i][1] + "</a></td><td>" +res[i][2]+"</td><td>"+res[i][3]+"</td><td>"+res[i][4]+"</td><td>"+res[i][5]+"</td><td>"+res[i][6]+"</td></tr>";
+						inner += "<tr><td><a href='/product/?id="+res[i][0]+"'>" + res[i][1] + "</a></td><td>" +res[i][5]+"</td><td>"+res[i][9]+"</td><td>"+res[i][7]+"</td><td>"+res[i][12]+"</td><td>"+res[i][8]+"</td></tr>";
 					}
 				}
 				inner += "</table>";
@@ -409,5 +410,13 @@ function showUploadTable(){
         document.getElementById("addProductTable").style.display="block";
     }else if(document.getElementById("addProductTable").style.display=="block"){
         document.getElementById("addProductTable").style.display="none";
+    }
+}
+
+function showSearchingPage(){
+    if(document.getElementById("searchbox").style.display=="none"){
+        document.getElementById("searchbox").style.display="block";
+    }else if(document.getElementById("searchbox").style.display=="block"){
+        document.getElementById("searchbox").style.display="none";
     }
 }

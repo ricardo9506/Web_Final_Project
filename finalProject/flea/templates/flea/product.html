@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<!-- css part -->
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock %}
+
+{% block inner %}<!-- inner part -->
+<div id='mianbox'>
+    <div>
+        <img src='/media/{{product.picture}}'>
+    </div>
+    <table id='mainboxtable'>
+        <tr>
+            <td><label>Product Name:</label></td><td>{{product.productName}}</td>
+        </tr>
+        <tr>
+            <td><label>Current Price:</label></td><td>{{product.price}} WON</td>
+        </tr>
+        <tr>
+            {% if product.sellType == "1" %}
+            <td><label>Left Time:</label></td><td><span id='lefttime'></span></td>
+            {% endif %}
+        </tr>
+        <tr><td><label>Seller Name:</label></td><td>{{product.sellerName}}</td></tr>
+        <tr><td><label>Seller Phone:</label></td><td>{{product.sellerNumber}}</td></tr>
+        <tr><td><label>Trade Place:</label></td><td>{{product.tradePlace}}</td></tr>
+        {% if product.sellType == "0" %}
+        <tr><td><button onclick="addtoCart()" class="thisbutton">Cart</button></td><td><button onclick="buy()" class="thisbutton">Buy</button></td></tr>
+        {% else %}
+        <tr><td><input type="number" id="bidprice"></td><td><button onclick="bid()" class="thisbutton">BID</button></td></tr>
+        <tr><td><button onclick="addtoCart()" class="thisbutton">Cart</button></td><td></td></tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}<!-- script part -->
+{% now "Y-m-d-s" as time %}
+{% if product.sellType == "1" and product.endTime|date:"Y-m-d-s" > time %}
+<script>
+    var dute = new Date('{{endtime}}');
+    function setLeftTime(){
+        var nowtime = new Date();
+        var time = dute - nowtime;
+        if(time < 0){
+            location.reload();
+        }
+
+        var day = parseInt(time / 1000 / 60 / 60 / 24);
+
+        var hour = parseInt(time / 1000 / 60 / 60 % 24);
+
+        var minute = parseInt(time / 1000 / 60 % 60);
+
+        var seconds = parseInt(time / 1000 % 60);
+
+        document.getElementById('lefttime').innerHTML = day + 'D ' + hour + 'H ' + minute + 'M ' + seconds + 'S ';
+    }
+    window.onload = setInterval('setLeftTime()','1000');
+</script>
+{% elif product.sellType == "1" and product.endTime|date:"Y-m-d-s" < time %}
+<script>
+    window.onload = document.getElementById('lefttime').innerHTML='End';
+</script>";
+{% endif %}
+{% endblock %}
