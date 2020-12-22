@@ -88,7 +88,7 @@ def search(request):
                 result.append(l)
             return HttpResponse(str(result))
         else:
-            res = models.Product.objects.filter(productName__range=[request.POST.get("key1"),request.POST.get("key2")]).values()
+            res = models.Product.objects.filter(price__range=[request.POST.get("key1"),request.POST.get("key2")]).values()
             result = list()
             for r in res:
                 l = list()
