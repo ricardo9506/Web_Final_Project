@@ -44,7 +44,6 @@ function search(type){
 	xhr.onreadystatechange = function(){
 		if(xhr.readyState===4){
 			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
-                console.log(xhr.responseText);
 				var res =  eval(xhr.responseText);
 				var inner = "<table rules='none'><tr><th>Product Name</th><th>Current Price</th><th>Trading Place</th><th>Phone Number</th><th>Status</th><th>Seller Name</th></tr>";
 				if(res.length == undefined){
@@ -391,7 +390,8 @@ function addProduct(){
     }
     
     var xhr = new XMLHttpRequest();
-	xhr.open("POST","/addProduct/",true);
+    xhr.open("POST","/addProduct/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xhr.send(fd);
     xhr.onreadystatechange = function(){
         if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
@@ -419,4 +419,106 @@ function showSearchingPage(){
     }else if(document.getElementById("searchbox").style.display=="block"){
         document.getElementById("searchbox").style.display="none";
     }
+}
+
+function addtoCart(id){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/deal/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send("type=0&id="+id);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                var go = confirm("Go to Cart to Check it!");
+                if(go){
+                    window.location.href='/buyer/?page=cart';
+                }
+            }else if(xhr.responseText=="0"){
+                alert("Login Please!");
+                window.location.href='/login/';
+            }else{
+                alert("Something Wrong!");
+            }
+        }
+    }
+}
+
+function buy(id){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/deal/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send("type=1&id="+id);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                var go = confirm("Get it!");
+                if(go){
+                    window.location.href='/buyer/?page=list';
+                }
+            }else if(xhr.responseText=="0"){
+                alert("Login Please!");
+                window.location.href='/login/';
+            }else{
+                alert("Something Wrong!");
+            }
+        }
+    }
+}
+
+function bid(id,current_price){
+    var price = document.getElementById("bidprice").value;
+    if(price <= current_price){
+        alert("Please Input Your Price above Current Price!");
+        return;
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","/deal/",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.send("type=2&id="+id+"&price="+price);
+    xhr.onreadystatechange = function(){
+        if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+            if(xhr.responseText=="1"){
+                var go = confirm("Go to Order Page to Check it!");
+                if(go){
+                    window.location.href='/buyer/?page=list';
+                }
+            }else if(xhr.responseText=="0"){
+                alert("Login Please!");
+                window.location.href='/login/';
+            }else{
+                alert("Something Wrong!");
+            }
+        }
+    }
+}
+
+function connect(){
+	var name = document.getElementById("contentname").value;
+	var email = document.getElementById("contentemail").value;
+	if(document.getElementById("type").value=="buyer"){
+		var type = "2";
+	}else if(document.getElementById("type").value=="seller"){
+		var type = "1";
+	}else{
+		alert("Please Enter Correct Type!");
+		return;
+	}
+	
+	var inner = document.getElementById("inner").value;
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST","/deal/",true);
+	xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xhr.send("type=3&name="+name+"&email="+email+"&utype="+type+"&inner="+inner);
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState===4){
+			if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){
+				if(xhr.responseText=="1"){
+					alert("Succeed!");
+					window.location.href='/homepage/'
+				}else{
+					alert("Something Wrong!");
+				}
+			}
+		}
+	}
 }

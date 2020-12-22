@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}<!-- css part -->
+<link rel="stylesheet" href="{% static 'css/connect.css' %}">
+{% endblock %}
+
+{% block inner %}<!-- inner part -->
+<div id='contentpage'>
+    <div id='one'>
+        <span class='title'>SungKyunKwan University</span><br>
+        <span class='inner'>2066,Scobu-ro,Jangun-gu,Suwon-st,Gyeonggl-do</span><br><br>
+        <span class='title'>010-1234-5678</span><br>
+        <span class='inner'>Mon to Fri 9am to 6am</span><br><br>
+        <span class='title'>jooohyednjs@gmail.com</span><br>
+        <span class='inner'>Send us your request anytime!</span>
+    </div>
+    <div id='two'>
+        <input type='text' placeholder='Enter Your Name' id='contentname'><br>
+        <input type='text' placeholder='Enter Email Address' id='contentemail'><br>
+        <input type='text' placeholder='Enter Your Type(buyer/seller)' id='type'>
+    </div>
+    <div id='three'>
+        <textarea id='inner' cols='40'rows='13' placeholder='Enter Message'></textarea>
+    </div>
+</div>
+<button id='abtn' class='btn' onclick='connect()'>Send</button>
+{% endblock %}
+
+{% block script %}<!-- script part -->
+
+{% endblock %}

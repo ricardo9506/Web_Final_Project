@@ -106,3 +106,99 @@ input{
 	width: 200px;
 	height: 30px;
 }
+
+#searchbox{
+	width: 60%;
+	margin: 200px auto;
+	background: #f8f7ff;
+	border-radius: 10px;
+	box-shadow: 0 10px 10px whitesmoke;
+	padding: 20px;
+}
+
+#searchtype{
+	width: 200px;
+	height: 30px;
+	margin-left: 20px;
+}
+
+.search{
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	background: url('../image/search.png') center center;
+	background-size: 100% 100%;
+	margin-left: 200px;
+	border: none;
+}
+
+#searchingByPrice{
+	display: none;
+}
+
+input{
+	width: 200px;
+	height: 30px;
+}
+
+#searchingSeller,
+#hightprice,
+#lowprice,
+#searchingName{
+	height: 40px;
+	width: 300px;
+}
+
+table{
+	margin-top:50px;
+	width:100%;
+}
+
+#searchingByPrice,
+#searchingBySeller{
+	display: none;
+}
+
+#searchingReasult{
+	width: 60%;
+	margin: 100px auto;
+	margin-bottom: 500px;
+}
+
+#searchingReasult table{
+	width: 100%;
+	text-align: left;
+	box-shadow: grey 0 0 10px;
+	border-radius: 10px;
+	line-height: 64px;
+}
+
+th{
+	background: #36304a;
+	color: #FFFFFF;
+	font-size: 20px;
+	padding-left: 10px;
+}
+
+#searchingReasult th:first-child{
+	border-radius: 10px 0 0 0;
+}
+
+#searchingReasult th:last-child{
+	border-radius: 0 10px 0 0;
+}
+
+#searchingReasult tr:nth-child(even){
+	background: #f8f7ff;
+}
+
+#searchingReasult tr:nth-child(odd){
+	background: #ffffff;
+}
+
+td{
+	padding-left: 10px;
+	color: rgb(158,158,158);
+	font-size: 17px;
+	font-weight: 100;
+}

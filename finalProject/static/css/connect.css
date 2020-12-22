@@ -1,0 +1,53 @@
+#contentpage{
+	width: 60%;
+	margin: 200px auto;
+	display: grid;
+	grid-template-columns: 30% 30% 40%;
+	grid-column-gap: 20px;
+}
+#one{
+	font-family: terminal;
+}
+
+.title{
+	color: #000000;
+	font-size: 16px;
+}
+
+.inner{
+	font-size: 14px;
+	color: rgb(173,173,173);
+}
+
+#two input{
+	width: 100%;
+	border: none;
+	height: 50px;
+	font-size: 15px;
+	margin-bottom: 20px;
+	color: rgb(173,173,173);
+	background: #d5f2fa;
+}
+
+#three textarea{
+	border: none;
+	resize: none;
+	color: rgb(173,173,173);
+	background: #d5f2fa;
+}
+
+#abtn{
+	position: fixed;
+	bottom: 100px;
+	right: 20%;
+}
+
+.btn{
+	width: 100px;
+	height: 50px;
+    border-radius: 0;
+    border: none;
+	background: #d5f2fa;
+	color: #000000;
+	font-size: 15px;
+}

@@ -21,5 +21,6 @@ urlpatterns = [
     path('buyer/',views.buyerPage,name='buyer'),
     path('connect/',views.connectPage,name='connect'),
     path('addProduct/',views.addProduct,name='addProduct'),
+    path('deal/',views.deal,name='deal'),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

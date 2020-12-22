@@ -48,7 +48,10 @@ def product(request):
     if "id" in request.GET:
         productId = request.GET.get("id")
         product = models.Product.objects.filter(id=productId).values()[0]
-        endtime = product["endTime"].__format__('%Y/%m/%d %H:%M:%S')
+        try:
+            endtime = product["endTime"].__format__('%Y/%m/%d %H:%M:%S')
+        except:
+            pass
         return render(request,'flea/product.html',locals())
     else:
         return render(request,'flea/homepage.html',locals())
@@ -78,7 +81,7 @@ def search(request):
                     else:
                         l.append("Sold")
                 else:
-                    if utc.localize(r["endTime"]) < utc.localize(datetime.datetime.now()):
+                    if utc.localize(r["endTime"]) > utc.localize(datetime.datetime.now()):
                         l.append("Bidding")
                     else:
                         l.append("End Bidded")
@@ -129,6 +132,7 @@ def adminPage(request):
     if request.method == "GET":
         userInfo = models.UserInfo.objects.all()
         products = models.Product.objects.all()
+        feedback = models.FeedBackInformation.objects.all()
         return render(request,'flea/admin.html',locals())
 
 def signout(request):
@@ -225,6 +229,45 @@ def addProduct(request):
     else:
         try:
             models.Product.objects.create(productName=productName,picture=img,seller=id,price=price,sellType=selltype,sellerNumber=sellerPhone,sellerName=sellerName,tradePlace=address)
+            return HttpResponse("1")
+        except:
+            return HttpResponse("0")
+
+def deal(request):
+    if request.POST.get("type") == "0":#add to cart
+        try:
+            productid = int(request.POST.get("id"))
+            models.Cart.objects.get_or_create(buyer=request.session['id'],product=productid)
+            return HttpResponse("1")
+        except:
+            return HttpResponse("0")
+        return HttpResponse("2")
+
+    elif request.POST.get("type") == "1":#buy
+        try:
+            productid = int(request.POST.get("id"))
+            models.Products.objects.filter(id=productid).update(buyer=request.session['id'])
+            return HttpResponse("1")
+        except:
+            return HttpResponse("0")
+        return HttpResponse("2")
+    elif request.POST.get("type") == "2":
+        try:
+             productid = int(request.POST.get("id"))
+             price = int(request.POST.get("price"))
+             models.AuctionInformation.objects.get_or_create(product=productid,bidder=request.session['id'],price=price)
+             models.Product.objects.filter(id=productid).update(price=price,buyer=request.session['id'])
+             return HttpResponse("1")
+        except:
+            return HttpResponse("0")
+        return HttpResponse("2")
+    elif request.POST.get("type") == "3":
+        try:
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            usertype = request.POST.get("utype")
+            inner = request.POST.get("inner")
+            models.FeedBackInformation.objects.create(name=name,email=email,usertype=usertype,inner=inner)
             return HttpResponse("1")
         except:
             return HttpResponse("0")
