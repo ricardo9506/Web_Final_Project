@@ -391,7 +391,7 @@ function addProduct(){
     
     var xhr = new XMLHttpRequest();
     xhr.open("POST","/addProduct/",true);
-    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    //xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xhr.send(fd);
     xhr.onreadystatechange = function(){
         if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)){

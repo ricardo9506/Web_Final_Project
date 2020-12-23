@@ -246,7 +246,7 @@ def deal(request):
     elif request.POST.get("type") == "1":#buy
         try:
             productid = int(request.POST.get("id"))
-            models.Products.objects.filter(id=productid).update(buyer=request.session['id'])
+            models.Product.objects.filter(id=productid).update(buyer=request.session['id'])
             return HttpResponse("1")
         except:
             return HttpResponse("0")
